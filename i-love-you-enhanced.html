@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>I Love You - Enhanced Heart Animation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(45deg, #ff6b6b, #ff8e8e, #ffa8a8, #ffb3ba);
+            background-size: 400% 400%;
+            animation: gradientShift 8s ease infinite;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+            position: relative;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .container {
+            text-align: center;
+            z-index: 10;
+            position: relative;
+        }
+
+        .love-text {
+            font-size: 4rem;
+            color: white;
+            font-weight: bold;
+            text-shadow: 0 0 30px rgba(255, 255, 255, 0.9), 0 0 60px rgba(255, 255, 255, 0.6);
+            margin-bottom: 2rem;
+            animation: glow 3s ease-in-out infinite alternate;
+            letter-spacing: 2px;
+        }
+
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 30px rgba(255, 255, 255, 0.9), 0 0 60px rgba(255, 255, 255, 0.6);
+            }
+            to {
+                text-shadow: 0 0 40px rgba(255, 255, 255, 1), 0 0 80px rgba(255, 255, 255, 0.8);
+            }
+        }
+
+        .heart-main {
+            position: relative;
+            width: 120px;
+            height: 108px;
+            margin: 0 auto 2rem;
+            animation: heartbeat 1.5s ease-in-out infinite;
+            filter: drop-shadow(0 0 20px rgba(255, 23, 68, 0.8));
+        }
+
+        .heart-main:before,
+        .heart-main:after {
+            position: absolute;
+            content: "";
+            left: 60px;
+            top: 0;
+            width: 60px;
+            height: 96px;
+            background: linear-gradient(135deg, #ff1744, #ff5252);
+            border-radius: 60px 60px 0 0;
+            transform: rotate(-45deg);
+            transform-origin: 0 100%;
+        }
+
+        .heart-main:after {
+            left: 0;
+            transform: rotate(45deg);
+            transform-origin: 100% 100%;
+        }
+
+        @keyframes heartbeat {
+            0% { transform: scale(1); }
+            14% { transform: scale(1.3); }
+            28% { transform: scale(1); }
+            42% { transform: scale(1.3); }
+            70% { transform: scale(1); }
+        }
+
+        .subtitle {
+            font-size: 1.8rem;
+            color: white;
+            margin-top: 1rem;
+            opacity: 0;
+            animation: fadeInUp 2s ease-in-out 1s forwards;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .particle-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            animation: particle-float 8s linear infinite;
+        }
+
+        @keyframes particle-float {
+            0% {
+                transform: translateY(100vh) translateX(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) translateX(100px);
+                opacity: 0;
+            }
+        }
+
+        .sparkle {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: white;
+            border-radius: 50%;
+            animation: sparkle 2s ease-in-out infinite;
+        }
+
+        @keyframes sparkle {
+            0%, 100% {
+                opacity: 0;
+                transform: scale(0);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .love-burst {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 200px;
+            height: 200px;
+            pointer-events: none;
+        }
+
+        .burst-particle {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: #ff1744;
+            border-radius: 50%;
+            opacity: 0;
+        }
+
+        @media (max-width: 600px) {
+            .love-text {
+                font-size: 2.5rem;
+            }
+            
+            .heart-main {
+                width: 80px;
+                height: 72px;
+            }
+            
+            .heart-main:before,
+            .heart-main:after {
+                width: 40px;
+                height: 64px;
+                left: 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="love-text">I Love You</h1>
+        <div class="heart-main"></div>
+        <p class="subtitle">Forever and Always</p>
+    </div>
+
+    <div class="particle-container">
+        <!-- Particles will be generated by JavaScript -->
+    </div>
+
+    <div class="love-burst">
+        <!-- Burst particles will be generated by JavaScript -->
+    </div>
+
+    <script>
+        // Create particles
+        function createParticles() {
+            const particleContainer = document.querySelector('.particle-container');
+            for (let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + 'vw';
+                particle.style.animationDelay = Math.random() * 8 + 's';
+                particle.style.animationDuration = (Math.random() * 4 + 6) + 's';
+                particleContainer.appendChild(particle);
+            }
+        }
+
+        // Create sparkles
+        function createSparkles() {
+            const container = document.querySelector('.container');
+            for (let i = 0; i < 20; i++) {
+                const sparkle = document.createElement('div');
+                sparkle.className = 'sparkle';
+                sparkle.style.left = Math.random() * 100 + '%';
+                sparkle.style.top = Math.random() * 100 + '%';
+                sparkle.style.animationDelay = Math.random() * 2 + 's';
+                container.appendChild(sparkle);
+            }
+        }
+
+        // Create love burst effect
+        function createLoveBurst(x, y) {
+            const burst = document.querySelector('.love-burst');
+            for (let i = 0; i < 12; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'burst-particle';
+                particle.style.left = '50%';
+                particle.style.top = '50%';
+                
+                const angle = (i * 30) * Math.PI / 180;
+                const distance = 100;
+                
+                particle.style.transform = `translate(-50%, -50%) rotate(${angle}rad)`;
+                particle.style.animation = `burst ${0.8}s ease-out forwards`;
+                particle.style.setProperty('--angle', angle + 'rad');
+                particle.style.setProperty('--distance', distance + 'px');
+                
+                burst.appendChild(particle);
+                
+                setTimeout(() => {
+                    particle.remove();
+                }, 800);
+            }
+        }
+
+        // Add CSS for burst animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes burst {
+                0% {
+                    transform: translate(-50%, -50%) rotate(var(--angle)) translateX(0);
+                    opacity: 1;
+                }
+                100% {
+                    transform: translate(-50%, -50%) rotate(var(--angle)) translateX(var(--distance));
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Initialize animations
+        createParticles();
+        createSparkles();
+
+        // Interactive click effect
+        document.addEventListener('click', function(e) {
+            createLoveBurst(e.clientX, e.clientY);
+        });
+
+        // Add hover effect on heart
+        document.querySelector('.heart-main').addEventListener('mouseenter', function() {
+            this.style.filter = 'drop-shadow(0 0 30px rgba(255, 23, 68, 1))';
+        });
+
+        document.querySelector('.heart-main').addEventListener('mouseleave', function() {
+            this.style.filter = 'drop-shadow(0 0 20px rgba(255, 23, 68, 0.8))';
+        });
+    </script>
+</body>
+</html>
